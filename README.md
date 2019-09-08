@@ -8,7 +8,7 @@ El proyecto consiste en el diseño e implementación de una base de datos distri
 
 ## Pre-requisitos 📋
 
-### Instalación 🔧
+## Instalación 🔧
 
 ## Ejecutar el Programa ⚙️
 
