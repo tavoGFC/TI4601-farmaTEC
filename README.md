@@ -1,4 +1,4 @@
-# TI4601-FarmaTEC 🚀
+# TI4601-FarmaTEC 💊 💉
 
 El código mostrado acontinuación formar parte de curso: TI4601 - Bases de Datos Avanzados.
 
