@@ -1,10 +1,10 @@
-# TI4601-FarmaTEC 💊 💉
+# TI4601-FarmaTEC 🚀
 
 El código mostrado acontinuación formar parte de curso: TI4601 - Bases de Datos Avanzados.
 
 El proyecto consiste en el diseño e implementación de una base de datos distribuida.
 
-# FarmaTEC 🤖
+# FarmaTEC 💊 💉
 
 ## Pre-requisitos 📋
 
