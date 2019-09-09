@@ -19,30 +19,33 @@ class Menu extends React.Component {
     return (
       <div className='App'>
         <Router>
-          <header id='header'>
-            <ul>
-              <li>
-                <NavLink to='/' exact activeClassName='active'>
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/Heredia' exact activeClassName='active'>
-                  Heredia (Centrales)
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/SanJose' exact activeClassName='active'>
-                  Cartago (Auxiliar)
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/Cartago' exact activeClassName='active'>
-                  San Jose (Auxiliar)
-                </NavLink>
-              </li>
-            </ul>
-          </header>
+          <div className='container center'>
+            <nav class='menu'>
+              <h1 class='menu__logo'>FarmaTEC</h1>
+              <ul className='menu__list'>
+                <li className='menu__list-item'>
+                  <NavLink to='/' exact activeClassName='active'>
+                    Home
+                  </NavLink>
+                </li>
+                <li className='menu__list-item'>
+                  <NavLink to='/Heredia' exact activeClassName='active'>
+                    Heredia (Centrales)
+                  </NavLink>
+                </li>
+                <li className='menu__list-item'>
+                  <NavLink to='/SanJose' exact activeClassName='active'>
+                    Cartago (Auxiliar)
+                  </NavLink>
+                </li>
+                <li className='menu__list-item'>
+                  <NavLink to='/Cartago' exact activeClassName='active'>
+                    San Jose (Auxiliar)
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>
+          </div>
           <main>
             <Switch>
               <Route path='/' exact component={HomeComponent} />
