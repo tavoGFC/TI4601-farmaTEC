@@ -1,0 +1,28 @@
+.index {
+  text-align: center;
+}
+
+header {
+  border: 1px;
+  color: black;
+}
+
+header:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+header ul {
+  list-style: none;
+}
+
+header ul li {
+  float: left;
+  margin-right: 20px;
+}
+
+header ul li .active {
+  font-weight: blod;
+  color: red;
+}
