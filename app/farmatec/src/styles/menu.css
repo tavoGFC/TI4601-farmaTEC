@@ -74,8 +74,8 @@ header ul li .active {
   text-indent: -9999999px;
   display: inline-block;
   height: 100%;
-  width: 92px;
-  /*background-image: url(logo.png);*/
+  width: 100px;
+  background-image: url(../images/med-logo.png);
   background-size: cover 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -86,4 +86,14 @@ header ul li .active {
   display: flex;
   align-items: center;
   height: 100%;
+}
+
+.menu__link:hover {
+  color: blue;
+}
+
+.menu__link--active {
+  color: blue;
+  border-top: 4px solid blue;
+  font-weight: 700;
 }

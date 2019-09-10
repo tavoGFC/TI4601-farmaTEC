@@ -8,8 +8,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {/*         <img src={MedLogo} />
-         */}{' '}
         <Menu />
       </div>
     );
