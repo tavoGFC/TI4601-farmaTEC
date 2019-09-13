@@ -4,56 +4,60 @@ import {
   NavLink,
   Redirect,
   Route,
-  Switch
+  Switch,
+  Link
 } from 'react-router-dom';
 
 import HomeComponent from './home';
-import HerediaComponent from './heredia';
-import SanJoseComponent from './sanjose';
-import CartagoComponent from './cartago';
+import ProductsComponent from './products';
+import OrderComponent from './order';
+import BranchOfficeComponent from './branchOffice';
+import { Breadcrumb, Badge, Container, Row, Col, Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap';
 
-import './../styles/menu.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Menu extends React.Component {
   render() {
     return (
-      <div className='App'>
-        <Router>
-          <header id='header'>
-            <ul>
-              <li>
-                <NavLink to='/' exact activeClassName='active'>
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/Heredia' exact activeClassName='active'>
-                  Heredia (Centrales)
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/SanJose' exact activeClassName='active'>
-                  Cartago (Auxiliar)
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/Cartago' exact activeClassName='active'>
-                  San Jose (Auxiliar)
-                </NavLink>
-              </li>
-            </ul>
-          </header>
-          <main>
-            <Switch>
-              <Route path='/' exact component={HomeComponent} />
-              <Route path='/Heredia' exact component={HerediaComponent} />
-              <Route path='/SanJose' exact component={SanJoseComponent} />
-              <Route path='/Cartago' exact component={CartagoComponent} />
-              <Redirect to='/' />
-              Main Content Here!
-            </Switch>
-          </main>
-        </Router>
+      <div style={{ marginTop: '2%' }}>
+        <Container>
+          <Row >
+            <Col xs lg="1"></Col>
+            <Col md="auto">
+              <Router>
+                <header>
+                  <Navbar bg="light" variant="light">
+                    <Navbar.Brand>{<Link to="/">FarmaTEC</Link>}</Navbar.Brand>
+                    <Nav className="mr-auto">
+                      <Nav.Link >{<Link to="/sucursales">Sucursales</Link>}</Nav.Link>
+                      <Nav.Link > {<Link to="/productos">Productos</Link>}</Nav.Link>
+                      <Nav.Link >{<Link to="/pedidos">Pedidos</Link>}</Nav.Link>
+                    </Nav>
+                    <Form inline>
+                      <FormControl type="text" placeholder="Busca tus productos" className="mr-sm-2" />
+                      <Button variant="outline-primary">Buscar</Button>
+                    </Form>
+                  </Navbar>
+                </header>
+                <main>
+                  <Switch>
+                    <Route path='/' exact component={HomeComponent} />
+                    <Route path='/pedidos' exact component={OrderComponent} />
+                    <Route path='/productos' exact component={ProductsComponent} />
+                    <Route path='/sucursales' exact component={BranchOfficeComponent} />
+                    <Redirect to='/' />
+                    Main Content Here!
+                </Switch>
+                </main>
+              </Router>
+            </Col>
+            <Col xs lg="2">
+              <Breadcrumb>
+                <Breadcrumb.Item href="#">Cerrar Sesion</Breadcrumb.Item>
+              </Breadcrumb>
+            </Col>
+          </Row>
+      </Container>
       </div>
     );
   }
