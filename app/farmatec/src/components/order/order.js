@@ -3,12 +3,13 @@ import { Form } from 'react-bootstrap';
 import OrderEmployee from './orderEmployee';
 import OrderClient from './orderClient';
 import OrderAdmin from './orderAdministrator';
+import OrderManagement from './orderManagement';
 
 class Order extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: '1'
+      userType: '2'
     };
 
   }
@@ -52,7 +53,7 @@ class Order extends React.Component {
         <div> <OrderAdmin />
           {
             /* ========== Parte para probar las vistas =========== */
-            //this._changeUserType()
+            this._changeUserType()
             //----------BORRAR---------------
           }
         </div>
@@ -60,11 +61,10 @@ class Order extends React.Component {
     }
     else if (this.state.userType === '2') {
       return (
-        <div>
-          <h5> Vista para el jefe Gerente </h5>
+        <div> <OrderManagement />
           {
             /* ========== Parte para probar las vistas =========== */
-            this._changeUserType()
+            //this._changeUserType()
             //----------BORRAR---------------
           }
         </div>

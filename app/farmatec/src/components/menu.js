@@ -9,9 +9,9 @@ import {
 } from 'react-router-dom';
 
 import HomeComponent from './home';
-import ProductsComponent from './products';
+import ProductComponent from './product/product';
 import OrderComponent from './order/order'
-import BranchOfficeComponent from './branchOffice';
+import BranchOfficeComponent from './branchOffice/branchOffice';
 import { Breadcrumb, Badge, Container, Row, Col, Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -49,7 +49,7 @@ class Menu extends React.Component {
                   <Switch>
                     <Route path='/' exact component={HomeComponent} />
                     <Route path='/pedidos' exact component={OrderComponent} />
-                    <Route path='/productos' exact component={ProductsComponent} />
+                    <Route path='/productos' exact component={ProductComponent} />
                     <Route path='/sucursales' exact component={BranchOfficeComponent} />
                     <Redirect to='/' />
                     Main Content Here!
