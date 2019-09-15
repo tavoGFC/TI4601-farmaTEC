@@ -39,30 +39,8 @@ class Order extends React.Component {
   render() {
     if (this.state.userType === '0') {
       return (
-        <div> <OrderClient />
-          {
-            /* ========== Parte para probar las vistas =========== */
-            this._changeUserType()
-            //----------BORRAR---------------
-          }
-        </div>
-      );
-    }
-    else if (this.state.userType === '1') {
-      return (
-        <div> <OrderAdmin />
-          {
-            /* ========== Parte para probar las vistas =========== */
-            this._changeUserType()
-            //----------BORRAR---------------
-          }
-        </div>
-      );
-    }
-    else if (this.state.userType === '2') {
-      return (
-        <div> <OrderManagement />
-          {
+        <div> <OrderClient /> 
+        {
             /* ========== Parte para probar las vistas =========== */
             //this._changeUserType()
             //----------BORRAR---------------
@@ -70,15 +48,19 @@ class Order extends React.Component {
         </div>
       );
     }
+    else if (this.state.userType === '1') {
+      return (
+        <div> <OrderAdmin /> </div>
+      );
+    }
+    else if (this.state.userType === '2') {
+      return (
+        <div> <OrderManagement /> </div>
+      );
+    }
     else {
       return (
-        <div> <OrderEmployee />
-          {
-            /* ========== Parte para probar las vistas =========== */
-            this._changeUserType()
-            //----------BORRAR---------------
-          }
-        </div>
+        <div> <OrderEmployee /> </div>
       );
     }
   }
