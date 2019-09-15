@@ -10,7 +10,7 @@ import {
 
 import HomeComponent from './home';
 import ProductsComponent from './products';
-import OrderComponent from './order';
+import OrderComponent from './order/order'
 import BranchOfficeComponent from './branchOffice';
 import { Breadcrumb, Badge, Container, Row, Col, Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap';
 
@@ -22,22 +22,28 @@ class Menu extends React.Component {
       <div style={{ marginTop: '2%' }}>
         <Container>
           <Row >
-            <Col xs lg="1"></Col>
             <Col md="auto">
               <Router>
                 <header>
-                  <Navbar bg="light" variant="light">
-                    <Navbar.Brand>{<Link to="/">FarmaTEC</Link>}</Navbar.Brand>
-                    <Nav className="mr-auto">
-                      <Nav.Link >{<Link to="/sucursales">Sucursales</Link>}</Nav.Link>
-                      <Nav.Link > {<Link to="/productos">Productos</Link>}</Nav.Link>
-                      <Nav.Link >{<Link to="/pedidos">Pedidos</Link>}</Nav.Link>
-                    </Nav>
-                    <Form inline>
-                      <FormControl type="text" placeholder="Busca tus productos" className="mr-sm-2" />
-                      <Button variant="outline-primary">Buscar</Button>
-                    </Form>
-                  </Navbar>
+                  <div className="row">
+                    <div className="col-lg-auto">
+                    <Navbar bg="light" variant="light">
+                      <Navbar.Brand>{<Link to="/">FarmaTEC</Link>}</Navbar.Brand>
+                      <Nav className="mr-auto">
+                        <Nav.Link >{<Link to="/sucursales">Sucursales</Link>}</Nav.Link>
+                        <Nav.Link > {<Link to="/productos">Productos</Link>}</Nav.Link>
+                        <Nav.Link >{<Link to="/pedidos">Pedidos</Link>}</Nav.Link>
+                      </Nav>
+                      <Form inline>
+                        <FormControl type="text" placeholder="Busca tus productos" className="mr-sm-2" />
+                        <Button variant="outline-primary">Buscar</Button>
+                      </Form>
+                    </Navbar>
+                    </div>
+                    <div className="col-md-auto">
+                        <a href="https://steamcdn-a.akamaihd.net/steam/apps/798950/header.jpg?t=1525233749">Cerrar Sesion</a>
+                    </div>
+                  </div>
                 </header>
                 <main>
                   <Switch>
@@ -51,13 +57,8 @@ class Menu extends React.Component {
                 </main>
               </Router>
             </Col>
-            <Col xs lg="2">
-              <Breadcrumb>
-                <Breadcrumb.Item href="#">Cerrar Sesion</Breadcrumb.Item>
-              </Breadcrumb>
-            </Col>
           </Row>
-      </Container>
+        </Container>
       </div>
     );
   }
