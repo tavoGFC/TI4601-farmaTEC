@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LogInComponent from './login';
-import SignUpComponent from './signup';
+//import SignUpComponent from './signup';
 
 //<LogInComponent />
 //<SignUpComponent />
@@ -12,7 +12,7 @@ class Menu extends React.Component {
   render() {
     return (
       <div>
-        <SignUpComponent />
+        <LogInComponent />
       </div>
     );
   }

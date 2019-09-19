@@ -1,13 +1,9 @@
 import React from 'react';
-import {
-  Form,
-  Button,
-  ButtonToolbar,
-  Container,
-  Col,
-  Row
-} from 'react-bootstrap';
+import { Form, Button, Container, Col, Row } from 'react-bootstrap';
+import { Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import SignUp from './signup';
 
 class LogIn extends React.Component {
   constructor(props) {
@@ -19,7 +15,7 @@ class LogIn extends React.Component {
     };
   }
 
-  _onSearchEmailUser = event => {
+  _onSearchUser = event => {
     this.setState({
       email: event.target.text
     });
@@ -32,7 +28,11 @@ class LogIn extends React.Component {
   };
 
   _onSignUpPressed = () => {
-    // cambiar ventana a crear cuenta
+    return (
+      <Switch>
+        <Route path='/crearcuenta' exact component={SignUp} />
+      </Switch>
+    );
   };
 
   _submitData = () => {
@@ -49,16 +49,13 @@ class LogIn extends React.Component {
         <Row className='justify-content-md-center'>
           <Col md='auto'>
             <Form>
-              <Form.Group controlId='formBasicEmail'>
-                <Form.Label>Correo Electrónico</Form.Label>
+              <Form.Group controlId='formBasicUser'>
+                <Form.Label>Usuario</Form.Label>
                 <Form.Control
-                  type='email'
-                  placeholder='ejemplo@correo.com'
-                  onChange={this._onSearchEmailUser}
+                  type='string'
+                  placeholder='e.g. farmatec.19'
+                  onChange={this._onSearchUser}
                 />
-                <Form.Text className='text-muted'>
-                  Su información no va a ser compartida con nadie.
-                </Form.Text>
               </Form.Group>
 
               <Form.Group controlId='formBasicPassword'>
