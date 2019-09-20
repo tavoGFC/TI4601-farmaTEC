@@ -1,11 +1,7 @@
 import React from 'react';
-import { Button, Card, Col, Container, Form, FormControl, Modal, Row, Tab, Tabs, Table, Badge } from 'react-bootstrap';
-import Fab from '@material-ui/core/Fab';
+import { Button, Form, Tab, Tabs, Table } from 'react-bootstrap';
 import Search from '@material-ui/icons/SearchOutlined';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class OrderAdministrator extends React.Component {
   constructor(props) {
@@ -214,10 +210,10 @@ class OrderAdministrator extends React.Component {
               </div>
             </div>
             <div className="row" style={{ margin: '4%' }}>
-              Total de Monto en Pedidos del Tipo 
-              <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold'}}>{this.state.orderType}</a>
-              para el mes <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold'}}>{this.state.orderMonth}</a> 
-              es: <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold'}}>{this.state.resultConsult3}</a>
+              Total de Monto en Pedidos del Tipo
+              <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.orderType}</a>
+              para el mes <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.orderMonth}</a>
+              es: <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.resultConsult3}</a>
             </div>
           </Tab>
         </Tabs>

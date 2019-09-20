@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  NavLink,
   Redirect,
   Route,
   Switch,
@@ -12,7 +11,7 @@ import HomeComponent from './home';
 import ProductComponent from './product/product';
 import OrderComponent from './order/order'
 import BranchOfficeComponent from './branchOffice/branchOffice';
-import { Breadcrumb, Badge, Container, Row, Col, Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap';
+import { Container, Row, Col, Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

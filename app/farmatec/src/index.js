@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import LogInComponent from './components/session/login';
 
-import Menu from './components/menu';
+
+
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        <Menu />
+        <LogInComponent />
       </div>
     );
   }
-} 
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
