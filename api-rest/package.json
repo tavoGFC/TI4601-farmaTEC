@@ -1,0 +1,26 @@
+{
+  "name": "api-rest-farmatec",
+  "version": "1.0.0",
+  "description": "api rest farmatec",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Equipo Farmatec-DEV",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^18.1.0",
+    "lodash": "^4.17.11",
+    "mysql": "^2.17.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.8.5",
+    "tedious": "^6.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.3",
+    "nodemon": "^1.18.10"
+  }
+}
