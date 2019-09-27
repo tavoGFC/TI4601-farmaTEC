@@ -15,33 +15,14 @@ GO
 /*CREACIÓN DE TABLAS*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------*/
 
-/*TABLA MANAGER*/
-CREATE TABLE Manager (
-	Mg_ID				VARCHAR(9)		NOT NULL	PRIMARY KEY,
-	Mg_First_Name		VARCHAR(25)		NOT NULL,
-	Mg_Last_Name_1		VARCHAR(25)		NOT NULL,
-	Mg_Last_Name_2		VARCHAR(25)		NOT NULL,
-	User_Access			VARCHAR(1)					DEFAULT '1'
-	);
-GO
-
-/*TABLA MANAGER*/
-CREATE TABLE Administrator (
-	Admin_ID				VARCHAR(9)		NOT NULL	PRIMARY KEY,
-	Admin_First_Name		VARCHAR(25)		NOT NULL,
-	Admin_Last_Name_1		VARCHAR(25)		NOT NULL,
-	Admin_Last_Name_2		VARCHAR(25)		NOT NULL,
-	User_Access				VARCHAR(1)					DEFAULT '2'
-	);
-GO
-
-/*TABLA STORE DEPENDENT*/
-CREATE TABLE Store_Dependent (
-	Dep_ID				VARCHAR(9)		NOT NULL	PRIMARY KEY,
-	Dep_First_Name		VARCHAR(20)		NOT NULL,
-	Dep_Last_Name_1		VARCHAR(20)		NOT NULL,
-	Dep_Last_Name_2		VARCHAR(20)		NOT NULL,
-	User_Access			VARCHAR(1)					DEFAULT '3'
+/*TABLA EMPLEADOS*/
+CREATE TABLE Employee(
+	Emp_ID				VARCHAR(9)		NOT NULL	PRIMARY KEY,
+	Emp_First_Name		VARCHAR(25)		NOT NULL,
+	Emp_Last_Name_1		VARCHAR(25)		NOT NULL,
+	Emp_Last_Name_2		VARCHAR(25)		NOT NULL,
+	Emp_User_Access		VARCHAR(1)		NOT NULL,
+	Emp_Password		VARCHAR(25)		NOT NULL
 	);
 GO
 
@@ -55,7 +36,8 @@ CREATE TABLE Client	(
 	Cl_Phone_Number		VARCHAR(8)		NOT NULL,
 	Cl_Type				VARCHAR(10)		NOT NULL,
 	Cl_City				VARCHAR(50)		NOT NULL,
-	User_Access			VARCHAR(1)					DEFAULT '4'
+	Cl_User_Access		VARCHAR(1)					DEFAULT '3',
+	Cl_Password			VARCHAR(25)		NOT NULL
 	);
 GO
 
@@ -76,12 +58,12 @@ CREATE TABLE Pharmacy (
 	Ph_Phone_Number		VARCHAR(8)		NOT NULL,
 	Ph_Email			VARCHAR(50)		NOT NULL,
 	Ph_Schedule_ID		INT				NOT NULL	FOREIGN KEY		REFERENCES Schedule(Sc_ID),
-	Ph_Manager_ID		VARCHAR(9)		NOT NULL	FOREIGN KEY		REFERENCES Manager(Mg_ID),
+	Ph_Admin_ID			VARCHAR(9)		NOT NULL	FOREIGN KEY		REFERENCES Employee(Emp_ID),
 	);
 GO
-ALTER TABLE Administrator 
+ALTER TABLE Employee 
 ADD 
-	Ph_ID				VARCHAR(9)		NOT NULL	FOREIGN KEY		REFERENCES Pharmacy(Ph_Legal_ID)
+	Ph_ID				VARCHAR(9)					FOREIGN KEY		REFERENCES Pharmacy(Ph_Legal_ID)
 GO
 ALTER TABLE Schedule
 ADD 
@@ -107,13 +89,12 @@ GO
 /*TABLA ORDER TOTAL*/
 CREATE TABLE Order_Total (
 	Or_ID				INT				NOT NULL	PRIMARY KEY		IDENTITY(1,1),
-	Or_Date				DATETIME		NOT NULL,
+	Or_Date				DATE			NOT NULL,
 	Or_Client_ID		VARCHAR(9)		NOT NULL	FOREIGN KEY		REFERENCES Client(Cl_ID),
-	Or_State			VARCHAR(10)		NOT NULL,
+	Or_State			VARCHAR(9)		NOT NULL,
 	Or_Type				VARCHAR(10)		NOT NULL,
-	Or_Detail			VARCHAR(50)		NOT NULL,
-	Or_Pharmacy			VARCHAR(10)		NOT NULL,
-	Total_Price			FLOAT			NOT NULL,
+	Or_Pharmacy			VARCHAR(9)		NOT NULL	FOREIGN KEY		REFERENCES Pharmacy(Ph_Legal_ID),
+	Total_Price			FLOAT			NOT NULL
 	);	
 GO
 
@@ -123,15 +104,7 @@ CREATE TABLE Order_Detail (
 	Order_Total_ID		INT				NOT NULL	FOREIGN KEY		REFERENCES Order_Total(Or_ID),
 	Product_ID			INT				NOT NULL	FOREIGN KEY		REFERENCES Product(Pd_ID),
 	Product_Quantity	INT				NOT NULL,
-	Total_Price			FLOAT			NOT NULL
-	);
-GO
-
-/*TABLA USERS*/
-CREATE TABLE Users (
-	Username			VARCHAR(25)		NOT NULL	PRIMARY KEY,
-	User_Password		VARCHAR(25)		NOT NULL,
-	User_ID_			VARCHAR(9)		NOT NULL 
+	Detail_Price		FLOAT			NOT NULL
 	);
 GO
 
@@ -141,67 +114,64 @@ GO
 /*CONSULTAS PARA ADMINISTRADORES DE SAN JOSÉ Y CARTAGO*/
 
 /*CANTIDAD DE DINERO RECAUDADO EN SUCURSAL*/
-CREATE PROCEDURE Get_Raised_Money
+CREATE PROCEDURE sp_Get_Raised_Money @City VARCHAR(9)
 AS
 SELECT SUM(Total_Price) 
 FROM Order_Total
-WHERE Or_State = 'Entregado' AND Or_Pharmacy = 'Ciudad'
+WHERE Or_State = 'Entregado' AND Or_Pharmacy = @City
 GO
 
 /*CANTIDAD DE PEDIDOS POR CLIENTE PARA RANGO DE FECHAS ESPECÍFICO*/
-CREATE PROCEDURE Get_Client_Orders
+CREATE PROCEDURE sp_Get_Client_Orders @In_Date DATE, @Out_Date DATE
 AS
 SELECT Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, Or_ID, Total_Price
 FROM Client INNER JOIN Order_Total ON Or_Client_ID = Cl_ID
-WHERE Or_Date BETWEEN 'Fecha inicial' AND 'Fecha final'
+WHERE Or_Date BETWEEN @In_Date AND @Out_Date
 GROUP BY Cl_ID
 GO
 
 /*MONTO PROMEDIO PAGADO POR PEDIDO POR CLIENTE PARA RANGO DE FECHAS ESPECÍFICO*/
-CREATE PROCEDURE Get_Average_Payment
+CREATE PROCEDURE sp_Get_Average_Payment @In_Date DATE, @Out_Date DATE
 AS
 SELECT Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, AVG(ALL Total_Price)
 FROM Client INNER JOIN Order_Total ON Or_Client_ID = Cl_ID
-WHERE Or_Date BETWEEN 'Fecha inicial' AND 'Fecha final'
+WHERE Or_Date BETWEEN @In_Date AND @Out_Date
 GROUP BY Cl_ID
 GO
 
 /*MONTO PEDIDO PARA TIPO DE PEDIDO PARA UN MES PARTICULAR*/
-CREATE PROCEDURE Get_Month_Order_Type_Payment
+CREATE PROCEDURE sp_Get_Month_Order_Type_Payment @Type VARCHAR(10), @Month VARCHAR(2)
 AS
 SELECT SUM(Total_Price)
 FROM Order_Total
-WHERE Or_Type = 'Tipo de pedido' AND MONTH(Or_Date) = 'Fecha'
+WHERE Or_Type = @Type AND MONTH(Or_Date) = @Month
 GO
 
 /*CONSULTAS PARA GERENTE EN OFICINAS CENTRALES*/
 
 /*MONTO RECAUDADO POR SUCURSAL POR PERÍODO*/
-CREATE PROCEDURE Get_Branch_Raised_Money
+CREATE PROCEDURE sp_Get_Branch_Raised_Money @In_Date DATE, @Out_Date DATE
 AS
 SELECT Or_Pharmacy, SUM(Total_Price) 
 FROM Order_Total
-WHERE Or_Date BETWEEN 'Fecha inicial' AND 'Fecha final'
+WHERE Or_Date BETWEEN @In_Date AND @Out_Date
 GROUP BY Or_Pharmacy
 GO
 
 /*MONTO RECAUDADO POR SUCURSAL Y TIPO POR PERÍODO*/
-CREATE PROCEDURE Get_Branch_Type_Raised_Money
+CREATE PROCEDURE sp_Get_Branch_Type_Raised_Money @In_Date DATE, @Out_Date DATE
 AS
 SELECT Or_Pharmacy, Or_Type, SUM(Total_Price)
 FROM Order_Total
-WHERE Or_Date BETWEEN 'Fecha inicial' AND 'Fecha final'
+WHERE Or_Date BETWEEN @In_Date AND @Out_Date
 GROUP BY Or_Pharmacy
 GO
 
 /*TRES MEJORES CLIENTES*/
-CREATE PROCEDURE Get_Top_Three_Clients
+CREATE PROCEDURE sp_Get_Top_Three_Clients @In_Date DATE, @Out_Date DATE
 AS
 SELECT TOP 3 Cl_ID, Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, SUM(Total_Price)
 FROM Client INNER JOIN Order_Total ON Or_Client_ID = Cl_ID
-WHERE Or_Date BETWEEN 'Fecha inicial' AND 'Fecha final'
+WHERE Or_Date BETWEEN @In_Date AND @Out_Date
 ORDER BY SUM(Total_Price)
 GO
-
-/*CONSULTAS EXTRAS*/
-

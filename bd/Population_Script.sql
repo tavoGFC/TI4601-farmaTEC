@@ -2,39 +2,38 @@
 USE FarmaTEC
 GO
 
-INSERT INTO Manager (Mg_ID, Mg_First_Name, Mg_Last_Name_1, Mg_Last_Name_2)
-VALUES
-	('502898126', 'Marisol', 'Solano', 'Mata');
-
-INSERT INTO Administrator (Admin_ID, Admin_First_Name, Admin_Last_Name_1, Admin_Last_Name_2, Ph_ID)
+INSERT INTO Employee (Emp_ID, Emp_First_Name, Emp_Last_Name_1, Emp_Last_Name_2, Emp_User_Access, Emp_Password, Ph_ID)
 VALUES 
-	('502898126', 'José', 'Solano', 'Mata', ''),
-	('67851238', 'Andrea', 'Gutiérrez', 'Blanco', ''),
-	('575026546', 'Felipe',	'Castro', 'López', '');
+	('502898126', 'Marisol', 'Solano', 'Mata', '1', 'passabc',''),
+	('502898126', 'José', 'Solano', 'Mata', '2', 'pass123', '801873614'),
+	('67851238', 'Andrea', 'Gutiérrez', 'Blanco', '2', 'pass456', '534717443'),
+	('575026546', 'Felipe',	'Castro', 'López', '2', 'pass789', '396940805');
 
-INSERT INTO Client (Cl_ID, Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, Cl_Account_ID, Cl_Phone_Number, Cl_Type, Cl_City)
+INSERT INTO Client (Cl_ID, Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, Cl_Account_ID, Cl_Phone_Number, Cl_Type, Cl_City, Cl_Password)
 VALUES
-	('854309735', 'María', 'Soto', 'Quesada', '1682', '43637992', '1', '1'),
-	('685944953', 'Javier', 'Pérez', 'Rodríguez', '3589', '75285265', '3', '2'),
-	('416676215', 'Adriana', 'Solís', 'Padilla', '2478', '20767502', '2', '3'),
-	('676424888', 'Luis', 'Arguedas', 'Duarte', '1536', '62936443', '2', '1'),
-	('115913778', 'Mariana', 'Jiménez', 'Andrade', '3018', '16415448', '1', '2'),
-	('296983486', 'Steven', 'Marín', 'Suárez', '2490', '62573647', '3', '3'),
-	('191161117', 'Laura', 'Azofeifa', 'Granados', '7982', '26938618', '3', '1'),
-	('222942580', 'Manuel', 'Morales', 'Leal', '1892', '33989289', '1', '2'),
-	('420954809', 'Sara', 'Zúñiga', 'Martínez', '9856', '76066357', '1','3'),
-	('161766252', 'Daniela', 'Leandro', 'Salas', '5893', '89631458', '3','1'),
-	('323712019', 'Miguel',	'Rojas', 'Lobo', '3489', '30588769', '1', '2'),
-	('498566554', 'Paula', 'Vega', 'Fernández', '1002', '88889245', '3', '3'),
-	('154822365', 'Michael', 'Elizondo', 'Díaz', '8103', '28325582', '2', '1'),
-	('363258475', 'Ligia', 'Montenegro', 'Solórzano', '3879', '32500879', '2', '2'),
-	('111245899', 'Guillermo', 'Chacón', 'Torres', '8879', '89847982', '3', '3');
+	('854309735', 'María', 'Soto', 'Quesada', '1682', '43637992', '1', '1','pass01'),
+	('685944953', 'Javier', 'Pérez', 'Rodríguez', '3589', '75285265', '3', '2', 'pass02'),
+	('416676215', 'Adriana', 'Solís', 'Padilla', '2478', '20767502', '2', '3', 'pass03'),
+	('676424888', 'Luis', 'Arguedas', 'Duarte', '1536', '62936443', '2', '1', 'pass04'),
+	('115913778', 'Mariana', 'Jiménez', 'Andrade', '3018', '16415448', '1', '2', 'pass05'),
+	('296983486', 'Steven', 'Marín', 'Suárez', '2490', '62573647', '3', '3', 'pass06'),
+	('191161117', 'Laura', 'Azofeifa', 'Granados', '7982', '26938618', '3', '1', 'pass07'),
+	('222942580', 'Manuel', 'Morales', 'Leal', '1892', '33989289', '1', '2', 'pass08'),
+	('420954809', 'Sara', 'Zúñiga', 'Martínez', '9856', '76066357', '1','3', 'pass09'),
+	('161766252', 'Daniela', 'Leandro', 'Salas', '5893', '89631458', '3','1', 'pass10'),
+	('323712019', 'Miguel',	'Rojas', 'Lobo', '3489', '30588769', '1', '2', 'pass11'),
+	('498566554', 'Paula', 'Vega', 'Fernández', '1002', '88889245', '3', '3', 'pass12'),
+	('154822365', 'Michael', 'Elizondo', 'Díaz', '8103', '28325582', '2', '1', 'pass13'),
+	('363258475', 'Ligia', 'Montenegro', 'Solórzano', '3879', '32500879', '2', '2', 'pass14'),
+	('111245899', 'Guillermo', 'Chacón', 'Torres', '8879', '89847982', '3', '3', 'pass15');
 
 INSERT INTO Schedule (Sc_ID, Sc_Open_Hour, Sc_Close_Hour)
 VALUES 
-	();
+	('08:00', '20:00'),
+	('07:30', '18:00'),
+	('06:00', '20:00');	
 
-INSERT INTO Pharmacy (Ph_Legal_Id, Ph_Name, Ph_City, Ph_Location, Ph_Phone_Number, Ph_Email, Ph_Schedule_ID, Ph_Manager_ID)
+INSERT INTO Pharmacy (Ph_Legal_Id, Ph_Name, Ph_City, Ph_Location, Ph_Phone_Number, Ph_Email, Ph_Schedule_ID, Ph_Admin_ID)
 VALUES 
 	('801873614', 'La Central', '1', 'Costado Norte del Parque Central de Heredia', '69684882',	'lacentral@gmail.com', 1,	'502898126'),
 	('534717443', 'Farma Nova',	'2', 'Diagonal esquina noreste Plaza de la Cultura', '76455858', 'farmanova@gmail.com',	2, '678512382'),
