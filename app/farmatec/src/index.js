@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import LogInComponent from './components/session/login';
 
-import Menu from './components/menu';
-//import MedLogo from './images/logo.png';
+
+
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        <Menu />
+        <LogInComponent />
       </div>
     );
   }

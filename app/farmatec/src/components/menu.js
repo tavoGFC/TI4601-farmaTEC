@@ -1,65 +1,63 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  NavLink,
   Redirect,
   Route,
-  Switch
+  Switch,
+  Link
 } from 'react-router-dom';
 
 import HomeComponent from './home';
-import HerediaComponent from './heredia';
-import SanJoseComponent from './sanjose';
-import CartagoComponent from './cartago';
+import ProductComponent from './product/product';
+import OrderComponent from './order/order'
+import BranchOfficeComponent from './branchOffice/branchOffice';
+import { Container, Row, Col, Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap';
 
-import './../styles/menu.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Menu extends React.Component {
   render() {
     return (
-      <div className='App'>
-        <Router>
-          <div className='container center'>
-            <nav className='menu'>
-              <h1 className='menu__logo'>FarmaTEC</h1>
-
-              <div className='menu__right'>
-                <ul className='menu__list'>
-                  <li className='menu__list-item'>
-                    <NavLink to='/' exact activeClassName='active'>
-                      Home
-                    </NavLink>
-                  </li>
-                  <li className='menu__list-item'>
-                    <NavLink to='/Heredia' exact activeClassName='active'>
-                      Heredia (Centrales)
-                    </NavLink>
-                  </li>
-                  <li className='menu__list-item'>
-                    <NavLink to='/SanJose' exact activeClassName='active'>
-                      Cartago (Auxiliar)
-                    </NavLink>
-                  </li>
-                  <li className='menu__list-item'>
-                    <NavLink to='/Cartago' exact activeClassName='active'>
-                      San Jose (Auxiliar)
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-          </div>
-          <main>
-            <Switch>
-              <Route path='/' exact component={HomeComponent} />
-              <Route path='/Heredia' exact component={HerediaComponent} />
-              <Route path='/SanJose' exact component={SanJoseComponent} />
-              <Route path='/Cartago' exact component={CartagoComponent} />
-              <Redirect to='/' />
-              Main Content Here!
-            </Switch>
-          </main>
-        </Router>
+      <div style={{ marginTop: '2%' }}>
+        <Container>
+          <Row >
+            <Col md="auto">
+              <Router>
+                <header>
+                  <div className="row">
+                    <div className="col-lg-auto">
+                    <Navbar bg="light" variant="light">
+                      <Navbar.Brand>{<Link to="/">FarmaTEC</Link>}</Navbar.Brand>
+                      <Nav className="mr-auto">
+                        <Nav.Link >{<Link to="/sucursales">Sucursales</Link>}</Nav.Link>
+                        <Nav.Link > {<Link to="/productos">Productos</Link>}</Nav.Link>
+                        <Nav.Link >{<Link to="/pedidos">Pedidos</Link>}</Nav.Link>
+                      </Nav>
+                      <Form inline>
+                        <FormControl type="text" placeholder="Busca tus productos" className="mr-sm-2" />
+                        <Button variant="outline-primary">Buscar</Button>
+                      </Form>
+                    </Navbar>
+                    </div>
+                    <div className="col-md-auto">
+                        <a href="https://steamcdn-a.akamaihd.net/steam/apps/798950/header.jpg?t=1525233749">Cerrar Sesion</a>
+                    </div>
+                  </div>
+                </header>
+                <main>
+                  <Switch>
+                    <Route path='/' exact component={HomeComponent} />
+                    <Route path='/pedidos' exact component={OrderComponent} />
+                    <Route path='/productos' exact component={ProductComponent} />
+                    <Route path='/sucursales' exact component={BranchOfficeComponent} />
+                    <Redirect to='/' />
+                    Main Content Here!
+                </Switch>
+                </main>
+              </Router>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

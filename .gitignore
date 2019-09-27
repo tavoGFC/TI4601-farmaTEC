@@ -5,5 +5,5 @@
 # misc #
 .DS
 .DS_Store
-
+/api-rest/node_modules/
 # ------------------------- #
