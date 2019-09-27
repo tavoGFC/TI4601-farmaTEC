@@ -9,7 +9,7 @@ class Order extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: '2'
+      userType: '0'
     };
 
   }

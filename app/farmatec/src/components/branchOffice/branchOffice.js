@@ -8,7 +8,7 @@ class BranchOffice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: '5',
+      userType: '2',
       branchesOffice: []
     };
 

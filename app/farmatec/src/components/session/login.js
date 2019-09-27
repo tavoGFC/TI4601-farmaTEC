@@ -4,6 +4,11 @@ import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 import Menu from '../menu';
 import SignUp from './signup';
 
+
+const Connection = require('tedious').Connection;
+const Request = require('tedious').Request;
+const TYPES = require('tedious').TYPES;
+
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +20,7 @@ class LogIn extends React.Component {
     };
 
   }
+
 
   _onSearchUser = event => {
     this.setState({
@@ -33,12 +39,44 @@ class LogIn extends React.Component {
     this.setState({ isCreateAccount: true })
   };
 
-  _submitData = () => {
+  _submitData = async () => {
     //validar data
     /// si es correcta cambiar ventana ventana principal
     /// si es inorrecta mandar alerta de error
-    
-    this.setState({ isLoading: true })
+    const config1 = {
+      server: 'GUS-LV',
+      database: 'farmatec',
+      user: 'user_admin',
+      password: 'asmodeoPASS16*',
+      port: 1433
+    };
+
+    const config = {
+      server: 'GUS-LV',
+      authentication: {
+        type: 'default',
+        options: {
+          userName: 'user_admin', // update me
+          password: 'asmodeoPASS16*' // update me
+        }
+      },
+      options: {
+        database: 'farmatec'
+      }
+    }
+    const connection = new Connection(config);
+
+    // Attempt to connect and execute queries if connection goes through
+    connection.on('connect', function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Connected');
+      }
+    });
+
+
+    //this.setState({ isLoading: true })
   };
 
 
@@ -53,15 +91,15 @@ class LogIn extends React.Component {
       return (
         <SignUp />
       )
-    } 
+    }
     else {
       return (
         <Container>
-          <h1 align='center'>FarmaTEC</h1>
-          <Row className='justify-content-md-center'>
+          <h1 align='center' style={{ marginTop: '4%' }}>FarmaTEC</h1>
+          <Row className='justify-content-md-center' style={{ marginTop: '3%' }}>
             <Col md='auto'>
               <Form>
-                <Form.Group controlId='formBasicUser'>
+                <Form.Group controlId='formBasicUser' style={{ marginTop: '3%' }}>
                   <Form.Label>Usuario</Form.Label>
                   <Form.Control
                     type='string'
@@ -69,7 +107,7 @@ class LogIn extends React.Component {
                     onChange={this._onSearchUser}
                   />
                 </Form.Group>
-                <Form.Group controlId='formBasicPassword'>
+                <Form.Group controlId='formBasicPassword' style={{ marginTop: '3%' }}>
                   <Form.Label>Contraseña</Form.Label>
                   <Form.Control
                     type='password'
@@ -80,8 +118,8 @@ class LogIn extends React.Component {
               </Form>
             </Col>
           </Row>
-          <Row className='justify-content-md-center'>
-            <div>
+          <Row className='justify-content-md-center' style={{ marginTop: '3%' }}>
+            <div >
               <Button
                 variant='primary'
                 type='submit'
