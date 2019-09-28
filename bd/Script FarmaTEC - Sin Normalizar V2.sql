@@ -37,7 +37,7 @@ CREATE TABLE [Client]	(
 	Cl_Phone_Number		INT				NOT NULL,
 	Cl_Type				VARCHAR(10)		NOT NULL,
 	Cl_City				VARCHAR(9)		NOT NULL,
-	Cl_User_Access		INT				DEFAULT 3,
+	Cl_User_Access		INT				DEFAULT 4,
 	Cl_Username			VARCHAR(25)		NOT NULL,
 	Cl_Password			VARCHAR(25)		NOT NULL
 	);
@@ -56,9 +56,7 @@ CREATE TABLE [Pharmacy] (
 	Ph_Legal_ID			INT				NOT NULL	PRIMARY KEY,
 	Ph_Name				VARCHAR(50)		NOT NULL,
 	Ph_City				VARCHAR(9)		NOT NULL,
-	Ph_Location			VARCHAR(50)		NOT NULL,
 	Ph_Phone_Number		INT				NOT NULL,
-	Ph_Email			VARCHAR(50)		NOT NULL,
 	Ph_Schedule_ID		INT				NOT NULL	FOREIGN KEY		REFERENCES [Schedule](Sc_ID),
 	Ph_Admin_ID			INT				NOT NULL	FOREIGN KEY		REFERENCES [Employee](Emp_ID),
 	);
@@ -74,7 +72,7 @@ CREATE TABLE [Product] (
 	Pd_Kid_Dose			VARCHAR(50)		NOT NULL,	
 	Pd_Adult_Dose		VARCHAR(50)		NOT NULL,
 	Pd_Side_Effects		VARCHAR(50)		NOT NULL,
-	Pd_Picture_ID		VARCHAR(50)		NOT NULL,	
+	Pd_Picture_ID		VARCHAR(MAX)	NOT NULL,	
 	Pd_Price			FLOAT			NOT NULL,
 	Pd_Stock			INT				NOT NULL
 	);
