@@ -12,7 +12,7 @@ function PharmacyRoutes(server) {
     },
     {
       method: 'GET',
-      path: '/GetAllClient',
+      path: '/GetRaisedMoney',
       handler: async function(request, h) {
         const db = await Db.connect();
         const result = await db.query('EXEC', {
