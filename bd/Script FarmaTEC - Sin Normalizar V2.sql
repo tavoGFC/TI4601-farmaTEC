@@ -63,14 +63,6 @@ CREATE TABLE [Pharmacy] (
 	Ph_Admin_ID			INT				NOT NULL	FOREIGN KEY		REFERENCES [Employee](Emp_ID),
 	);
 GO
-ALTER TABLE [Employee] 
-ADD 
-	Ph_ID				INT							FOREIGN KEY		REFERENCES [Pharmacy](Ph_Legal_ID)
-GO
-ALTER TABLE [Schedule]
-ADD 
-	Ph_ID				INT				NOT NULL	FOREIGN KEY		REFERENCES [Pharmacy](Ph_Legal_ID)
-GO
 
 /*TABLA PRODUCT*/
 CREATE TABLE [Product] (
