@@ -20,9 +20,7 @@ CREATE TABLE [Employee](
 	Emp_ID				INT				NOT NULL	PRIMARY KEY,
 	Emp_First_Name		VARCHAR(25)		NOT NULL,
 	Emp_Last_Name_1		VARCHAR(25)		NOT NULL,
-	Emp_Last_Name_2		VARCHAR(25)		NOT NULL,
-	Emp_User_Access		INT				NOT NULL,
-	Emp_Username		VARCHAR(25)		NOT NULL,
+	Emp_Last_Name_2		VARCHAR(25)		NOT NULL,	
 	Emp_Password		VARCHAR(25)		NOT NULL
 	);
 GO
@@ -33,12 +31,10 @@ CREATE TABLE [Client]	(
 	Cl_First_Name		VARCHAR(20)		NOT NULL,
 	Cl_Last_Name_1		VARCHAR(20)		NOT NULL,
 	Cl_Last_Name_2		VARCHAR(20)		NOT NULL,
-	Cl_AccountID		INT				NOT NULL,
+	Cl_Account_ID		INT				NOT NULL,
 	Cl_Phone_Number		INT				NOT NULL,
 	Cl_Type				VARCHAR(10)		NOT NULL,
 	Cl_City				VARCHAR(9)		NOT NULL,
-	Cl_User_Access		INT				DEFAULT 4,
-	Cl_Username			VARCHAR(25)		NOT NULL,
 	Cl_Password			VARCHAR(25)		NOT NULL
 	);
 GO
@@ -65,12 +61,12 @@ GO
 /*TABLA PRODUCT*/
 CREATE TABLE [Product] (
 	Pd_ID				INT				NOT NULL	PRIMARY KEY		IDENTITY(1,1),
-	Pd_Name				VARCHAR(20)		NOT NULL,
-	Pd_Brand			VARCHAR(20)		NOT NULL,
-	Pd_Type				VARCHAR(10)		NOT NULL,
-	Pd_Description		VARCHAR(50)		NOT NULL,
-	Pd_Kid_Dose			VARCHAR(50)		NOT NULL,	
-	Pd_Adult_Dose		VARCHAR(50)		NOT NULL,
+	Pd_Name				VARCHAR(50)		NOT NULL,
+	Pd_Brand			VARCHAR(50)		NOT NULL,
+	Pd_Type				VARCHAR(50)		NOT NULL,
+	Pd_Description		VARCHAR(100)		NOT NULL,
+	Pd_Kid_Dose			VARCHAR(100)		NOT NULL,	
+	Pd_Adult_Dose		VARCHAR(100)		NOT NULL,
 	Pd_Side_Effects		VARCHAR(50)		NOT NULL,
 	Pd_Picture_ID		VARCHAR(MAX)	NOT NULL,	
 	Pd_Price			FLOAT			NOT NULL,
@@ -88,6 +84,6 @@ CREATE TABLE [Order] (
 	Or_Pharmacy_ID		INT				NOT NULL	FOREIGN KEY		REFERENCES [Pharmacy](Ph_Legal_ID),
 	Pd_ID				INT				NOT NULL	FOREIGN KEY		REFERENCES [Product](Pd_ID),
 	Pd_Quantity			INT				NOT NULL,
-	Price				FLOAT			NOT NULL
+	Price				FLOAT			NOT NULL	
 	);	
 GO
