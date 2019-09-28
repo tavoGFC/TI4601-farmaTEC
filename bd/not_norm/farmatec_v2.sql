@@ -35,7 +35,6 @@ CREATE TABLE [Client]
 	Cl_Phone_Number INT NOT NULL,
 	Cl_Type VARCHAR(10) NOT NULL,
 	Cl_City VARCHAR(9) NOT NULL,
-	Cl_User_Access INT DEFAULT 4,
 	Cl_Username VARCHAR(25) NOT NULL,
 	Cl_Password VARCHAR(25) NOT NULL
 );
