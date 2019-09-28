@@ -12,7 +12,18 @@ function OrderRoutes(server) {
     },
     {
       method: 'GET',
-      path: '/GetAllClient',
+      path: '/GetAveragePayment',
+      handler: async function(request, h) {
+        const db = await Db.connect();
+        const result = await db.query('EXEC', {
+          type: Sequelize.QueryTypes.SELECT
+        });
+        return JSON.stringify(result);
+      }
+    },
+    {
+      method: 'GET',
+      path: '/GetTypeOrderMonth',
       handler: async function(request, h) {
         const db = await Db.connect();
         const result = await db.query('EXEC', {
