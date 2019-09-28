@@ -22,5 +22,7 @@ Futuras versiones tendrán una estructura, acomodo y guías correspondientes.
 
 ## Authors ✒️
 
-- **Gustavo Fallas** - _Programdor, Diseñador y Constructor_ - [Git Personal](https://github.com/tavoGFC)
+- **Pablo Ezquivel** - _Programdor, Diseñador y Constructor_ - [Git Personal](https://github.com/Chanchus)
+- **Gustavo Fallas** - _Programdor, Diseñador y Constructor_ - [Git Personal](https://github.com/luisjo81)
 - **Randy Martínez** - _Programdor, Diseñador y Constructor_ - [Git Personal](https://github.com/randyma01)
+- **Luis Martínez** - _Programdor, Diseñador y Constructor_ - [Git Personal](https://github.com/randyma01)
