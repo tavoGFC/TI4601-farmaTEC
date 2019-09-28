@@ -6,14 +6,14 @@ function ClientRoutes(server) {
     {
       method: 'GET',
       path: '/Welcome',
-      handler: function(request, h) {
+      handler: function (request, h) {
         return '<h1>Welcome to the API - FarmaTEC</h1>';
       }
     },
     {
       method: 'GET',
       path: '/GetAllClient',
-      handler: async function(request, h) {
+      handler: async function (request, h) {
         const db = await Db.connect();
         const result = await db.query('EXEC', {
           type: Sequelize.QueryTypes.SELECT
