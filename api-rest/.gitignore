@@ -1,6 +1,6 @@
 # authors: #
 # proj: farmatec #
-# module: app #
+# module: restful-api #
 
 # dependencies #
 /api-rest/node_modules
