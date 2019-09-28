@@ -4,17 +4,13 @@ const config = {
   serverMaster: '',
   serverLocal: '',
 
-  //local db
+  //local
   database: '',
-
-  //master db
-  databaseMaster: '',
-
-  // local node
   user: '',
   password: '',
 
-  // master node
+  //master
+  databaseMaster: '',
   userMaster: '',
   passMaster: '',
 
