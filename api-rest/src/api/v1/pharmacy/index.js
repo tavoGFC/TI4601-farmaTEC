@@ -15,9 +15,43 @@ function PharmacyRoutes(server) {
       path: '/GetRaisedMoney',
       handler: async function(request, h) {
         const db = await Db.connect();
-        const result = await db.query('EXEC', {
-          type: Sequelize.QueryTypes.SELECT
-        });
+        const result = await db.query(
+          'EXEC usp_Get_Raised_Money :Pharmacy_ID',
+          {
+            replacements: { Pharmacy_ID: value },
+            type: Sequelize.QueryTypes.SELECT
+          }
+        );
+        return JSON.stringify(result);
+      }
+    },
+    {
+      method: 'GET',
+      path: '/GetBranchRaisedMoney',
+      handler: async function(request, h) {
+        const db = await Db.connect();
+        const result = await db.query(
+          'EXEC usp_Get_Branch_Raised_Money :In_Date, :Out_Date',
+          {
+            replacements: { In_Date: value, Out_Date: value },
+            type: Sequelize.QueryTypes.SELECT
+          }
+        );
+        return JSON.stringify(result);
+      }
+    },
+    {
+      method: 'GET',
+      path: '/GetBranchTypeRaisedMoney',
+      handler: async function(request, h) {
+        const db = await Db.connect();
+        const result = await db.query(
+          'EXEC usp_Get_Branch_Type_Raised_Money :In_Date, :Out_Date',
+          {
+            replacements: { In_Date: value, Out_Date: value },
+            type: Sequelize.QueryTypes.SELECT
+          }
+        );
         return JSON.stringify(result);
       }
     }
