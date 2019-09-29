@@ -499,7 +499,7 @@ AS
 BEGIN
 	UPDATE [Employee] 
 	SET 
-		Emp_First_Name = @first_name, Emp_Last_Name_1 = @last_name1, Emp_Last_Name_2 = @last_name2, Emp_Password = Emp_Password)
+		Emp_First_Name = @first_name, Emp_Last_Name_1 = @last_name1, Emp_Last_Name_2 = @last_name2, Emp_Password = Emp_Password
 	WHERE Emp_ID = @id
 END
 GO
@@ -673,24 +673,23 @@ FROM [Order]
 WHERE Or_State = 'Entregado' AND Or_Pharmacy_ID = @Pharmacy_ID
 GO
 
-/*Estado: No funciona*/
+/*Estado: Funciona*/
 /*CANTIDAD DE PEDIDOS POR CLIENTE PARA RANGO DE FECHAS ESPECÍFICO*/
 CREATE PROCEDURE usp_Get_Client_Orders @In_Date DATE, @Out_Date DATE
 AS
 SELECT Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, Or_ID, Price
-FROM [Client] FULL OUTER JOIN [Order] ON Or_Client_ID = Cl_ID
+FROM [Client] INNER JOIN [Order] ON Or_Client_ID = Cl_ID
 WHERE Or_Date BETWEEN @In_Date AND @Out_Date
-GROUP BY Cl_ID
 GO
 
 /*MONTO PROMEDIO PAGADO POR PEDIDO POR CLIENTE PARA RANGO DE FECHAS ESPECÍFICO*/
-/*Estado: No funciona*/
+/*Estado: Funciona*/
 CREATE PROCEDURE usp_Get_Average_Payment @In_Date DATE, @Out_Date DATE
 AS
-SELECT Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, AVG(ALL Price)
-FROM [Client] INNER JOIN [Order] ON Or_Client_ID = Cl_ID
+SELECT Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, AVG(ALL Price) AS [Average_Payment]
+FROM [Client] FULL OUTER JOIN [Order] ON Or_Client_ID = Cl_ID
 WHERE Or_Date BETWEEN @In_Date AND @Out_Date
-GROUP BY Cl_ID
+GROUP BY Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2
 GO
 
 /*MONTO PEDIDO PARA TIPO DE PEDIDO PARA UN MES PARTICULAR*/
@@ -715,21 +714,22 @@ GROUP BY Or_Pharmacy_ID
 GO
 
 /*MONTO RECAUDADO POR SUCURSAL Y TIPO POR PERÍODO*/
-/*Estado: No Funciona*/
+/*Estado: Funciona*/
 CREATE PROCEDURE usp_Get_Branch_Type_Raised_Money @In_Date DATE, @Out_Date DATE
 AS
 SELECT Or_Pharmacy_ID, Or_Type, SUM(Price)
 FROM [Order]
 WHERE Or_Date BETWEEN @In_Date AND @Out_Date
-GROUP BY Or_Pharmacy_ID
+GROUP BY Or_Pharmacy_ID, Or_Type
 GO
 
 /*TRES MEJORES CLIENTES*/
-/*Estado:No funciona*/
+/*Estado:Funciona*/
 CREATE PROCEDURE usp_Get_Top_Three_Clients @In_Date DATE, @Out_Date DATE
 AS
-SELECT TOP 3 Cl_ID, Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, SUM(Price)
+SELECT TOP 3 Cl_ID, Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2, SUM(Price) AS [Price_Sum]
 FROM [Client] INNER JOIN [Order] ON Or_Client_ID = Cl_ID
 WHERE Or_Date BETWEEN @In_Date AND @Out_Date
-GROUP BY SUM(Price)
-GO	
+GROUP BY Cl_ID, Cl_First_Name, Cl_Last_Name_1, Cl_Last_Name_2
+ORDER BY SUM(Price) DESC
+GO
