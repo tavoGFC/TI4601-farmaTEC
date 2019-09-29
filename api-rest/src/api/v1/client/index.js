@@ -7,20 +7,10 @@ function ClientRoutes(server) {
       method: 'GET',
       path: '/Clients',
       handler: function(request, h) {
-        return '<h1>Employee Test Successful!<h1>';
+        return '<h1>Clients Test Successful!<h1>';
       }
     },
-    {
-      method: 'GET',
-      path: '/GetAllClient',
-      handler: async function(request, h) {
-        const db = await Db.connect();
-        const result = await db.query('EXEC', {
-          type: Sequelize.QueryTypes.SELECT
-        });
-        return JSON.stringify(result);
-      }
-    },
+
     {
       method: 'GET',
       path: '/GetClientOrders',
