@@ -1,7 +1,7 @@
 USE master
 GO
 
-DROP DATABASE FarmaTEC
+DROP DATABASE IF EXISTS FarmaTEC
 GO
 
 CREATE database FarmaTEC
@@ -17,6 +17,7 @@ CREATE TABLE [Employee]
 	Emp_First_Name VARCHAR(25) NOT NULL,
 	Emp_Last_Name_1 VARCHAR(25) NOT NULL,
 	Emp_Last_Name_2 VARCHAR(25) NOT NULL,
+	Emp_User_Access	INT NOT NULL,
 	Emp_Password VARCHAR(25) NOT NULL
 );
 GO
