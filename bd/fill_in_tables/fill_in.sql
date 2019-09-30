@@ -1,7 +1,6 @@
 /****** FARMATEC Population Script ******/
 USE FarmaTEC
 GO
-use master
 
 INSERT INTO [Employee] (Emp_ID, Emp_First_Name, Emp_Last_Name_1, Emp_Last_Name_2, Emp_User_Access, Emp_Password)
 VALUES 
