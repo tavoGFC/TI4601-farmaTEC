@@ -19,11 +19,33 @@ function ClientRoutes(server) {
         const result = await db.query(
           'EXEC usp_Get_Client_Orders :In_Date, :Out_Date',
           {
-            replacements: { In_Date: value, Out_Date: value },
+            replacements: { In_Date: request.query.in, Out_Date: request.query.out },
             type: Sequelize.QueryTypes.SELECT
           }
         );
-        return JSON.stringify(result);
+        const result_orders_clients = Promise.all(
+          result.map(async (client) => {
+            const order = await db.query(
+              'EXEC sp_Get_Order_ID :id',
+              {
+                replacements: { id: client.Or_ID },
+                type: Sequelize.QueryTypes.SELECT
+              }
+            );
+            const product = await db.query(
+              'EXEC sp_Get_Product_ID :id',
+              {
+                replacements: { id: order[0]["Pd_ID"] },
+                type: Sequelize.QueryTypes.SELECT
+              }
+            );
+            return {
+              'order': { 'id': order[0]["Or_ID"], 'date': order[0]["Or_Date"], 'client': order[0]["Or_Client_ID"], 'product': product[0]["Pd_Name"], 'price': client["Price"] },
+              'client': { 'id': order[0]["Or_Client_ID"], 'name': client["Cl_First_Name"] + ' ' + client["Cl_Last_Name_1"] + ' ' + client["Cl_Last_Name_2"] }
+            }
+          })
+        );
+        return result_orders_clients
       }
     },
     {
@@ -34,11 +56,11 @@ function ClientRoutes(server) {
         const result = await db.query(
           'EXEC usp_Get_Average_Payment :In_Date, :Out_Date',
           {
-            replacements: { In_Date: value, Out_Date: value },
+            replacements: { In_Date: request.query.in, Out_Date: request.query.out },
             type: Sequelize.QueryTypes.SELECT
           }
         );
-        return JSON.stringify(result);
+        return result;
       }
     },
     {
@@ -78,6 +100,21 @@ function ClientRoutes(server) {
     },
     {
       method: 'GET',
+      path: '/GetClientId',
+      handler: async function (request, h) {
+        const db = await Db.connect();
+        const result = await db.query(
+          'EXEC sp_Get_Client_ID :id',
+          {
+            replacements: { id: request.query.client },
+            type: Sequelize.QueryTypes.SELECT
+          }
+        );
+        return result;
+      }
+    },
+    {
+      method: 'GET',
       path: '/Login',
       handler: async function (request, h) {
         const db = await Db.connect();
@@ -88,7 +125,7 @@ function ClientRoutes(server) {
             type: Sequelize.QueryTypes.SELECT
           }
         );
-        if (JSON.stringify(result) === '[]'){
+        if (JSON.stringify(result) === '[]') {
           const result2 = await db.query(
             'EXEC sp_Get_Client_Name :nameQuery',
             {
@@ -96,12 +133,12 @@ function ClientRoutes(server) {
               type: Sequelize.QueryTypes.SELECT
             }
           );
-          if (JSON.stringify(result2) === '[]'){
+          if (JSON.stringify(result2) === '[]') {
             return '0'
           }
-          return {'id': result2[0]["Cl_ID"], type: 4};
+          return { 'id': result2[0]["Cl_ID"], type: 4 };
         }
-        return  {'id': result[0]["Emp_ID"], type: result[0]["Emp_User_Access"]};
+        return { 'id': result[0]["Emp_ID"], type: result[0]["Emp_User_Access"] };
       }
     },
 

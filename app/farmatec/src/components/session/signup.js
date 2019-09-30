@@ -26,7 +26,7 @@ class Signup extends React.Component {
     return fetch('localhost:8080/ap')
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson != '') {
+        if (responseJson !== '') {
           this.setState({
             weatherday: responseJson
           })

@@ -47,7 +47,7 @@ class Menu extends React.Component {
                       </Navbar>
                     </div>
                     <div className="col-md-auto">
-                      <a href="https://steamcdn-a.akamaihd.net/steam/apps/798950/header.jpg?t=1525233749">Cerrar Sesion</a>
+                      <a href="http://localhost:3000">Cerrar Sesion</a>
                     </div>
                   </div>
                 </header>

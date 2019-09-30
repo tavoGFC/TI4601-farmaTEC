@@ -19,7 +19,7 @@ class OrderClient extends React.Component {
       })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson != 0) {
+        if (responseJson !== '') {
           console.log(responseJson);
           this.setState({
             orders: responseJson
@@ -53,7 +53,7 @@ class OrderClient extends React.Component {
                   <td>Productos: {order.Pd_Quantity}</td>
                   <td>{order.Or_State}</td>
                   <td>{order.Or_Type}</td>
-                  <td>{order.Price}</td>
+                  <td> $ {order.Price}</td>
                 </tr>
               ))}
             </tbody>
