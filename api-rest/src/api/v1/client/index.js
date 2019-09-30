@@ -26,6 +26,7 @@ function ClientRoutes(server) {
         return JSON.stringify(result);
       }
     },
+
     {
       method: 'GET',
       path: '/GetAveragePaymentClient',
