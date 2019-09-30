@@ -9,7 +9,8 @@ class Order extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: '0'
+      userType: props.userType,
+      userId: props.userId
     };
 
   }
@@ -37,23 +38,18 @@ class Order extends React.Component {
   }
 
   render() {
-    if (this.state.userType === '0') {
+    if (this.state.userType === 4) {
       return (
-        <div> <OrderClient /> 
-        {
-            /* ========== Parte para probar las vistas =========== */
-            //this._changeUserType()
-            //----------BORRAR---------------
-          }
+        <div> <OrderClient id={this.state.userId} />
         </div>
       );
     }
-    else if (this.state.userType === '1') {
+    else if (this.state.userType === 2) {
       return (
         <div> <OrderAdmin /> </div>
       );
     }
-    else if (this.state.userType === '2') {
+    else if (this.state.userType === 1) {
       return (
         <div> <OrderManagement /> </div>
       );

@@ -13,6 +13,7 @@ class OrderAdministrator extends React.Component {
       orderType: '',
       orderMonth: '',
       resultConsult3: ''
+      
     };
 
   }

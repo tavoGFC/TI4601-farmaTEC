@@ -6,19 +6,31 @@ class OrderClient extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: props.id,
       orders: []
     };
 
   }
 
   componentDidMount() {
-    this.setState({
-      orders: [
-        { id: '1', number: '123', detail: 'curitas, alcohol, pastillas', state: 'Listo para entregar' },
-        { id: '2', number: '125', detail: '2 aspirinaTEC', state: 'En proceso' }
-      ]
-    });
-  }
+    return fetch(`http://localhost:8080/GetOrdersClient?client=${this.state.userId}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson != 0) {
+          console.log(responseJson);
+          this.setState({
+            orders: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
 
   render() {
     return (
@@ -30,14 +42,18 @@ class OrderClient extends React.Component {
                 <th>Numero de Pedido</th>
                 <th>Detalle</th>
                 <th>Estado</th>
+                <th>Tipo</th>
+                <th>Precio</th>
               </tr>
             </thead>
             <tbody>
               {this.state.orders.map((order) => (
-                <tr key={order.id}>
-                  <td>{order.number}</td>
-                  <td>{order.detail}</td>
-                  <td>{order.state}</td>
+                <tr key={order.Or_ID}>
+                  <td>{order.Or_ID}</td>
+                  <td>Productos: {order.Pd_Quantity}</td>
+                  <td>{order.Or_State}</td>
+                  <td>{order.Or_Type}</td>
+                  <td>{order.Price}</td>
                 </tr>
               ))}
             </tbody>

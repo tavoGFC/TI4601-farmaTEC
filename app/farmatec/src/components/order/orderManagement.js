@@ -13,10 +13,6 @@ class OrderManagement extends React.Component {
 
   }
 
-  componentDidMount() {
-    //TODO
-  };
-
   _selectDate = () => {
     return (
       <div>
@@ -43,13 +39,21 @@ class OrderManagement extends React.Component {
   }
 
   _onSearchBestClients = () => {
-    this.setState({
-      bestClients: [
-        { id: '1', number: '123456789', name: 'Usuario Test', ordersAmount: '2', totalAmount: '$130'},
-        { id: '2', number: '116290789', name: 'Alonso Carrera', ordersAmount: '12', totalAmount: '$79'},
-        { id: '2', number: '116290789', name: 'Gustavo Fallas', ordersAmount: '12', totalAmount: '$36' }
-      ]
-    });
+    return fetch(`http://localhost:8080/GetTopThreeClients?in=${this.state.startDate}&out=${this.state.endDate}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson != 0) {
+          this.setState({
+            bestClients: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
 
@@ -72,17 +76,15 @@ class OrderManagement extends React.Component {
               <tr>
                 <th>Nombre Cliente</th>
                 <th>Cedula Cliente</th>
-                <th>Pedidos Realizados</th>
-                <th>Monto Total</th>
+                <th>Monto Total en Pedidos</th>
               </tr>
             </thead>
             <tbody>
               {this.state.bestClients.map((client) => (
-                <tr key={client.id}>
-                  <td>{client.name}</td>
-                  <td>{client.number}</td>
-                  <td>{client.ordersAmount}</td>
-                  <td>{client.totalAmount}</td>
+                <tr key={client.Cl_ID}>
+                  <td>{client.Cl_First_Name} {client.Cl_Last_Name_1} {client.Cl_Last_Name_2}</td>
+                  <td>{client.Cl_ID}</td>
+                  <td>{client.Price_Sum}</td>
                 </tr>
               ))}
             </tbody>

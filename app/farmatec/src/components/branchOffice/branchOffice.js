@@ -8,7 +8,7 @@ class BranchOffice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: '2',
+      userType: '0',
       branchesOffice: []
     };
 
@@ -71,11 +71,6 @@ class BranchOffice extends React.Component {
     if (this.state.userType === '0') {
       return (
         <div style={{ marginTop: '5%' }}> {this._viewBranchOffice()} 
-        {
-            /* ========== Parte para probar las vistas =========== */
-            //this._changeUserType()
-            //----------BORRAR---------------
-          }
         </div>
       );
     }

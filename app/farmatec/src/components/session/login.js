@@ -5,32 +5,43 @@ import Menu from '../menu';
 import SignUp from './signup';
 
 
-const Connection = require('tedious').Connection;
-const Request = require('tedious').Request;
-const TYPES = require('tedious').TYPES;
-
 class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
       isCreateAccount: false,
-      email: '',
-      password: ''
+      name: '',
+      password: '',
+      dataUser: []
     };
 
   }
 
+  _onVerifyUser = async () => {
+    return fetch('')
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson != '') {
+          this.setState({
+            weatherday: responseJson
+          })
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 
   _onSearchUser = event => {
     this.setState({
-      email: event.target.text
+      name: event.target.value
     });
   };
 
   _onSearchPasswordUser = event => {
     this.setState({
-      password: event.target.text
+      password: event.target.value
     });
   };
 
@@ -40,43 +51,22 @@ class LogIn extends React.Component {
   };
 
   _submitData = async () => {
-    //validar data
-    /// si es correcta cambiar ventana ventana principal
-    /// si es inorrecta mandar alerta de error
-    const config1 = {
-      server: 'GUS-LV',
-      database: 'farmatec',
-      user: 'user_admin',
-      password: 'asmodeoPASS16*',
-      port: 1433
-    };
-
-    const config = {
-      server: 'GUS-LV',
-      authentication: {
-        type: 'default',
-        options: {
-          userName: 'user_admin', // update me
-          password: 'asmodeoPASS16*' // update me
+    return  await fetch(`http://localhost:8080/Login?name=${this.state.name}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson != 0) {
+          this.setState({ 
+            isLoading: true,
+            dataUser: responseJson
+          });
         }
-      },
-      options: {
-        database: 'farmatec'
-      }
-    }
-    const connection = new Connection(config);
-
-    // Attempt to connect and execute queries if connection goes through
-    connection.on('connect', function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('Connected');
-      }
-    });
-
-
-    //this.setState({ isLoading: true })
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
 
@@ -84,7 +74,7 @@ class LogIn extends React.Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <Menu />
+        <Menu dataUser={this.state.dataUser} />
       );
     }
     else if (this.state.isCreateAccount) {
@@ -105,6 +95,7 @@ class LogIn extends React.Component {
                     type='string'
                     placeholder='e.g. farmatec.19'
                     onChange={this._onSearchUser}
+                    value={this.state.name}
                   />
                 </Form.Group>
                 <Form.Group controlId='formBasicPassword' style={{ marginTop: '3%' }}>
@@ -113,6 +104,7 @@ class LogIn extends React.Component {
                     type='password'
                     placeholder='********'
                     onChange={this._onSearchPasswordUser}
+                    value={this.state.password}
                   />
                 </Form.Group>
               </Form>

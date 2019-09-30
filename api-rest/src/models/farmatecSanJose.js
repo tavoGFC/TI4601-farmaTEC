@@ -1,18 +1,18 @@
 import Sequelize from 'sequelize';
 
 const config = {
-  serverMaster: '',
-  serverLocal: '',
+  serverMaster: '-',
+  serverLocal: 'GUS-LV',
 
   //local
-  database: '',
-  user: '',
-  password: '',
+  database: 'FarmaTEC',
+  user: 'user',
+  password: 'pass',
 
   //master
-  databaseMaster: '',
-  userMaster: '',
-  passMaster: '',
+  databaseMaster: '-',
+  userMaster: '-',
+  passMaster: '-',
 
   port: 1433
 };

@@ -21,6 +21,22 @@ class Signup extends React.Component {
     };
   }
 
+
+  _createUser = async () => {
+    return fetch('localhost:8080/ap')
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson != '') {
+          this.setState({
+            weatherday: responseJson
+          })
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   _cancelPrssed = () => {
     // redirigir a la venta de login
     console.log('Click!');
