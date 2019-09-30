@@ -45,7 +45,7 @@ class OrderManagement extends React.Component {
       })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson != 0) {
+        if (responseJson !== '') {
           this.setState({
             bestClients: responseJson
           });

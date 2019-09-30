@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Card } from 'react-bootstrap';
-
+import { Card } from 'react-bootstrap';
 import OfficeManagement from './officeManagement';
 import OfficeAdmin from './officeAdministrator';
 
@@ -8,44 +7,29 @@ class BranchOffice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userType: '0',
+      userType: props.userType,
+      userId: props.userId,
       branchesOffice: []
     };
 
   }
 
-  /* ---------------------- Inicio    Borrar -------------------- */
-  _handleChangeUserType(event) {
-    console.log(event.target.value);
-    this.setState({ userType: event.target.value });
-    console.log(this.state.userType);
-  }
-  _changeUserType = () => {
-    return (
-      < div className="col-7" >
-        <Form.Group controlId="ControlSelectType">
-          <Form.Label>UserType:</Form.Label>
-          <Form.Control as="select" onChange={this._handleChangeUserType.bind(this)}>
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </Form.Control>
-        </Form.Group>
-      </div >
-    );
-  }
-  /* ----------------------  Fin   Borrar -------------------- */
-
-
   componentDidMount() {
-    this.setState({
-      branchesOffice: [
-        { id: 1, name: 'Heredia', info: 'Ubicados en Centro', schedule: 'Lunes a Viernes 08:00 - 19:00', photo: 'http://www.farmaciascondefa.com/images/farmacia.png' },
-        { id: 2, name: 'San Jose', info: 'Parque Central 300 metros norte', schedule: 'Lunes a Viernes 08:00 - 22:00', photo: 'http://www.farmaciascondefa.com/images/farmacia.png' },
-        { id: 3, name: 'Cartago', info: 'Costado norte de la iglesia', schedule: 'Lunes a Viernes 08:00 - 15:00', photo: 'http://www.farmaciascondefa.com/images/farmacia.png' }
-      ]
-    });
+    return fetch('http://localhost:8080/GetAllBranch',
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          this.setState({
+            branchesOffice: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   _viewBranchOffice = () => {
@@ -57,10 +41,11 @@ class BranchOffice extends React.Component {
             <Card.Body>
               <Card.Title>{office.name}</Card.Title>
               <Card.Text>
-                {office.info}
+                <p style={{ marginLeft: '1%', marginRight: '1%' }}>Cuidad: {office.city}</p>
+                <p style={{ marginLeft: '1%', marginRight: '1%' }}>Tel: {office.phone}</p>
               </Card.Text>
             </Card.Body>
-            <Card.Footer className="text-muted">{office.schedule}</Card.Footer>
+            <Card.Footer className="text-muted">Desde: {office.open_hour} hasta: {office.close_hour}</Card.Footer>
           </Card>
         ))}
       </div>
@@ -70,16 +55,16 @@ class BranchOffice extends React.Component {
   render() {
     if (this.state.userType === '0') {
       return (
-        <div style={{ marginTop: '5%' }}> {this._viewBranchOffice()} 
+        <div style={{ marginTop: '5%' }}> {this._viewBranchOffice()}
         </div>
       );
     }
-    else if (this.state.userType === '1') {
+    else if (this.state.userType === 2) {
       return (
-        <div> <OfficeAdmin /> </div>
+        <div> <OfficeAdmin userId={this.state.userId} /> </div>
       );
     }
-    else if (this.state.userType === '2') {
+    else if (this.state.userType === 1) {
       return (
         <div> <OfficeManagement /> </div>
       );

@@ -18,21 +18,6 @@ class LogIn extends React.Component {
 
   }
 
-  _onVerifyUser = async () => {
-    return fetch('')
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson != '') {
-          this.setState({
-            weatherday: responseJson
-          })
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-
   _onSearchUser = event => {
     this.setState({
       name: event.target.value
@@ -57,7 +42,7 @@ class LogIn extends React.Component {
       })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson != 0) {
+        if (responseJson !== 0) {
           this.setState({ 
             isLoading: true,
             dataUser: responseJson

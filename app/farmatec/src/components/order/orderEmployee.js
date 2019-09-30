@@ -19,11 +19,36 @@ class OrderEmployee extends React.Component {
       orders: [
         { id: '1', number: '123', client: '116290789', state: 'Listo para entregar' },
         { id: '2', number: '125', client: '115987892', state: 'En proceso' }
-      ]
+      ],
+      clientId: '',
+      typeOrder: '',
+      stateOrder: '',
+      productNameFind: '',
+      pharmacyList: [],
+      pharmacyId: ''
     };
     this._handleChangeAmountProduct = this._handleChangeAmountProduct.bind(this);
-
   }
+
+  componentDidMount() {
+    return fetch(`http://localhost:8080/GetAllBranch`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          console.log(responseJson);
+          this.setState({
+            pharmacyList: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
 
   _findOrderProducts = () => {
     return (
@@ -40,19 +65,19 @@ class OrderEmployee extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <Form inline>
-            <FormControl type="text" placeholder="Buscar producto" className="mr-sm-1" />
+            <FormControl type="text" placeholder="Buscar producto" className="mr-sm-1" onChange={this._onFindProductsName.bind(this)} />
             <Button variant="outline-dark" size="sm" onClick={this._onFindProducts}>Buscar</Button>
           </Form>
           <div style={{ margin: '5%', height: 550, width: '90%', overflow: 'scroll' }}>
             <Grid container spacing={10}>
               <Grid item xs={6}>
                 {this.state.productsFind.slice(0, this.state.productsFind.length / 2).map((item) => (
-                  <Card style={{ width: '18rem', marginTop: '3%' }} key={item.id}>
+                  <Card style={{ width: '18rem', marginTop: '3%' }} key={item.Pd_ID}>
                     <Card.Img variant="top" src={item.photo} />
                     <Card.Body>
-                      <Card.Title>{item.name} {item.id}</Card.Title>
-                      <Card.Text>{item.description}</Card.Text>
-                      <div>Precio <Badge>{item.price}</Badge></div>
+                      <Card.Title>{item.Pd_Name} {item.Pd_ID}</Card.Title>
+                      <Card.Text>{item.Pd_Description}</Card.Text>
+                      <div>Precio <Badge>{item.Pd_Price}</Badge></div>
                       <TextField
                         label="Cantidad"
                         type="number"
@@ -65,12 +90,12 @@ class OrderEmployee extends React.Component {
               </Grid>
               <Grid item xs={6}>
                 {this.state.productsFind.slice(this.state.productsFind.length / 2, this.state.productsFind.length).map((item) => (
-                  <Card style={{ width: '18rem', marginTop: '3%' }} key={item.id}>
+                  <Card style={{ width: '18rem', marginTop: '3%' }} key={item.Pd_ID}>
                     <Card.Img variant="top" src={item.photo} />
                     <Card.Body>
-                      <Card.Title>{item.name} {item.id}</Card.Title>
-                      <Card.Text>{item.description}</Card.Text>
-                      <div>Precio <Badge>{item.price}</Badge></div>
+                      <Card.Title>{item.Pd_Name} {item.Pd_ID}</Card.Title>
+                      <Card.Text>{item.Pd_Description}</Card.Text>
+                      <div>Precio <Badge>{item.Pd_Price}</Badge></div>
                       <TextField
                         label="Cantidad"
                         type="number"
@@ -100,6 +125,18 @@ class OrderEmployee extends React.Component {
     this.setState({ amountProduct: event.target.value });
   }
 
+  _handleChangeType(event) {
+    this.setState({ typeOrder: event.target.value });
+  }
+
+  _handleChangeState(event) {
+    this.setState({ stateOrder: event.target.value });
+  }
+
+  _handleChangePharmacy(event) {
+    this.setState({ pharmacyId: event.target.value })
+  }
+
   _onAddOrderProduct(item, value) {
     item['amount'] = value
     this.setState({
@@ -107,38 +144,59 @@ class OrderEmployee extends React.Component {
     });
   }
 
+  _onCreateOrder = () => {
+    this.state.orderProducts.map((item) => {
+      fetch(`http://localhost:8080/AddOrder?client=${this.state.clientId}&state=${this.state.stateOrder}&type=${this.state.typeOrder}&pharmacy=${this.state.pharmacyId}&product=${item.Pd_ID}&quantity=${item.amount}&price=${item.Pd_Price}`,
+        {
+          method: 'GET'
+        })
+        .then(response => response.json())
+        .then(responseJson => {
+          if (responseJson !== '') {
+            console.log(responseJson);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
+
+  }
+
   _onDeleteProduct(id) {
     this.setState(state => {
-      const orderProducts = state.orderProducts.filter(item => item.id !== id);
+      const orderProducts = state.orderProducts.filter(item => item.Pd_ID !== id);
       return {
         orderProducts
       };
     });
   }
 
+  _onFindClient(event) {
+    this.setState({ clientId: event.target.value })
+  }
+
+  _onFindProductsName(event) {
+    this.setState({ productNameFind: event.target.value })
+  }
 
   _onFindProducts = () => {
-    this.setState({
-      productsFind: [
-        { id: '1', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-        { id: '2', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-        { id: '3', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-        { id: '4', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-        /*
-          { id: '5', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-          { id: '6', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-          { id: '7', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-          { id: '8', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-          { id: '9', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-          { id: '10', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-          { id: '11', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-          { id: '12', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-          { id: '13', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' },
-          { id: '14', name: 'omeprazolTEC', description: 'tomar antes del desayuno, todos los dias', price: 85, photo: 'https://static.ideal.es/www/multimedia/201907/20/media/cortadas/omeprazol-kLBF-U80803241370w4G-624x385@Ideal.jpg' },
-          { id: '15', name: 'aspirinaTEC', description: 'dolores de cabeza, tomar 2 veces al dia', price: 10, photo: 'https://www.farmaciasoler.com/img/uploads/aspirina-plus-500mg-50-mg-20comp--0.jpg' }
-        */
-      ]
-    });
+    return fetch(`http://localhost:8080/GetProductName?product=${this.state.productNameFind}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          console.log(responseJson);
+          this.setState({
+            productsFind: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   _onViewAddOrderProduct = () => {
@@ -163,21 +221,29 @@ class OrderEmployee extends React.Component {
                   <Form>
                     <Form.Group controlId="ControlInputClient">
                       <Form.Label>Cedula Cliente:</Form.Label>
-                      <Form.Control type="number" placeholder="0 0000 0000" />
+                      <Form.Control type="number" placeholder="0 0000 0000" onChange={this._onFindClient.bind(this)} />
                     </Form.Group>
                     <Form.Group controlId="ControlSelectState">
                       <Form.Label>Estado de pedido:</Form.Label>
-                      <Form.Control as="select">
-                        <option>Listo para entregar</option>
-                        <option>En proceso</option>
-                        <option>Entregado</option>
+                      <Form.Control as="select" onChange={this._handleChangeState.bind(this)}>
+                        <option value={'Listo'}>Listo para entregar</option>
+                        <option value={'EnProceso'}>En proceso</option>
+                        <option value={'Entregado'}>Entregado</option>
                       </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="ControlSelectType">
                       <Form.Label>Tipo de pedido:</Form.Label>
-                      <Form.Control as="select">
+                      <Form.Control as="select" onChange={this._handleChangeType.bind(this)}>
                         <option>Especial</option>
                         <option>Regular</option>
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="ControlSelectPharmacy">
+                      <Form.Label>Surcusal:</Form.Label>
+                      <Form.Control as="select" onChange={this._handleChangePharmacy.bind(this)}>
+                        {this.state.pharmacyList.map((item) => (
+                          <option value={item.id}>{item.name}</option>
+                        ))}
                       </Form.Control>
                     </Form.Group>
                   </Form>
@@ -199,14 +265,14 @@ class OrderEmployee extends React.Component {
                       </thead>
                       <tbody>
                         {this.state.orderProducts.map((item) => (
-                          <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.name}</td>
+                          <tr key={item.Pd_ID}>
+                            <td>{item.Pd_ID}</td>
+                            <td>{item.Pd_Name}</td>
                             <td>{item.amount}</td>
-                            <td>{item.price}</td>
-                            <td>{(item.amount) * (item.price)}</td>
+                            <td> $ {item.Pd_Price}</td>
+                            <td>{(item.amount) * (item.Pd_Price)}</td>
                             <td>
-                              <IconButton aria-label="delete" style={{ color: 'red' }} onClick={this._onDeleteProduct.bind(this, item.id)}>
+                              <IconButton aria-label="delete" style={{ color: 'red' }} onClick={this._onDeleteProduct.bind(this, item.Pd_ID)}>
                                 <DeleteIcon />
                               </IconButton>
                             </td>
@@ -217,7 +283,7 @@ class OrderEmployee extends React.Component {
                   </div>
                   <div>{this._findOrderProducts()}</div>
                   <div style={{ marginLeft: '30%', marginRight: '30%' }}>
-                    <Button variant="primary">
+                    <Button variant="primary" onClick={this._onCreateOrder}>
                       Generar Pedido
                 </Button>
                   </div>

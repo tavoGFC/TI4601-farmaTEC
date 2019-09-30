@@ -9,18 +9,15 @@ class OrderAdministrator extends React.Component {
     this.state = {
       orders: [],
       clients: [],
-      clientsConsulta2: [],
+      resultConsult2: [],
       orderType: '',
       orderMonth: '',
-      resultConsult3: ''
-      
+      orderMonthName: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      resultConsult3: '',
+      startDate: '',
+      endDate: ''
     };
-
   }
-
-  componentDidMount() {
-    //TODO
-  };
 
   _selectDate = (buttonAction) => {
     return (
@@ -30,13 +27,13 @@ class OrderAdministrator extends React.Component {
           <div className="col-md-auto">
             <Form.Group controlId="ControlInputStartDate">
               <Form.Label>Desde:</Form.Label>
-              <Form.Control type="date" placeholder="dd/mm/yy" />
+              <Form.Control type="date" placeholder="dd/mm/yyyy" onChange={this._handleChangeStartDate.bind(this)} />
             </Form.Group>
           </div>
           <div className="col-md-auto">
             <Form.Group controlId="ControlInputEndDate">
               <Form.Label>Hasta:</Form.Label>
-              <Form.Control type="date" placeholder="dd/mm/yy" />
+              <Form.Control type="date" placeholder="dd/mm/yyyy" onChange={this._handleChangeEndDate.bind(this)} />
             </Form.Group>
           </div>
           <div className="col-md-auto">
@@ -47,42 +44,62 @@ class OrderAdministrator extends React.Component {
     );
   }
 
-  _onSearchConsult1 = () => {
-    console.log("buscar consulta 1");
-    this.setState({
-      orders: [
-        { id: '1', number: '123', detail: 'curitas, alcohol, pastillas', clientId: '116290789', date: "15-09-2019" },
-        { id: '2', number: '125', detail: '2 aspirinaTEC', clientId: '123456789', date: "22-09-2019" },
-        { id: '3', number: '153', detail: 'pastillas', clientId: '123456789', date: "02-09-2019" },
-        { id: '1', number: '123', detail: 'curitas, alcohol, pastillas', clientId: '116290789', date: "15-09-2019" },
-        { id: '2', number: '125', detail: '2 aspirinaTEC', clientId: '123456789', date: "22-09-2019" },
-        { id: '3', number: '153', detail: 'pastillas', clientId: '123456789', date: "02-09-2019" },
-        { id: '1', number: '123', detail: 'curitas, alcohol, pastillas', clientId: '116290789', date: "15-09-2019" },
-        { id: '2', number: '125', detail: '2 aspirinaTEC', clientId: '123456789', date: "22-09-2019" },
-        { id: '3', number: '153', detail: 'pastillas', clientId: '123456789', date: "02-09-2019" },
-        { id: '1', number: '123', detail: 'curitas, alcohol, pastillas', clientId: '116290789', date: "15-09-2019" },
-        { id: '2', number: '125', detail: '2 aspirinaTEC', clientId: '123456789', date: "22-09-2019" },
-        { id: '3', number: '153', detail: 'pastillas', clientId: '123456789', date: "02-09-2019" }
-      ],
-      clients: [
-        { id: '1', number: '123456789', name: 'Usuario Test', ordersAmount: '2' },
-        { id: '2', number: '116290789', name: 'Alonso Carrera', ordersAmount: '12' }
-      ]
-    });
+  _onSearchConsult1 = async () => {
+    return fetch(`http://localhost:8080/GetClientOrders?in=${this.state.startDate}&out=${this.state.endDate}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          console.log(responseJson);
+          this.setState({
+            orders: responseJson.map((item) => { return item["order"] }),
+            clients: responseJson.map((item) => { return item["client"] })
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
-  _onSearchConsult2 = () => {
-    console.log("buscar consulta 2");
-    this.setState({
-      clientsConsulta2: [
-        { id: '1', clientId: '123456789', name: 'Usuario Test', orderAmount: '2', orderAverage: '$14' },
-        { id: '2', clientId: '116290789', name: 'Alonso Carrera', orderAmount: '12', orderAverage: '$5' }
-      ]
-    });
+  _onSearchConsult2 = async () => {
+    return fetch(`http://localhost:8080/GetAveragePaymentClient?in=${this.state.startDate}&out=${this.state.endDate}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          console.log(responseJson);
+          this.setState({
+            resultConsult2: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   _onSearchConsult3 = () => {
-    this.setState({ resultConsult3: '$ ' + Math.floor((Math.random() * 100) + 1) });
+    return fetch(`http://localhost:8080/GetTypeOrderMonth?type=${this.state.orderType}&month=${this.state.orderMonth}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          console.log(responseJson);
+          this.setState({
+            resultConsult3: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   _handleChangeOrderType(event) {
@@ -91,6 +108,14 @@ class OrderAdministrator extends React.Component {
 
   _handleChangeOrderMonth(event) {
     this.setState({ orderMonth: event.target.value });
+  }
+
+  _handleChangeStartDate(event) {
+    this.setState({ startDate: event.target.value });
+  }
+
+  _handleChangeEndDate(event) {
+    this.setState({ endDate: event.target.value });
   }
 
   render() {
@@ -103,20 +128,18 @@ class OrderAdministrator extends React.Component {
             <div className="row">
               <div className="col-md-auto">
                 <div style={{ marginTop: '3%' }}>
-                  <Table responsive>
+                  <Table responsive striped bordered hover>
                     <thead>
                       <tr>
                         <th>Cliente</th>
                         <th>Cedula Cliente</th>
-                        <th>Pedidos Realizados</th>
                       </tr>
                     </thead>
                     <tbody>
                       {this.state.clients.map((client) => (
                         <tr key={client.id}>
                           <td>{client.name}</td>
-                          <td>{client.number}</td>
-                          <td>{client.ordersAmount}</td>
+                          <td>{client.id}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -125,22 +148,24 @@ class OrderAdministrator extends React.Component {
               </div>
               <div className="col-md-auto">
                 <div style={{ marginTop: '3%' }}>
-                  <Table responsive>
+                  <Table responsive striped bordered hover>
                     <thead>
                       <tr>
                         <th>Numero de Pedido</th>
                         <th>Cedula Cliente</th>
                         <th>Fecha Pedido</th>
                         <th>Detalle Pedido</th>
+                        <th>Precio</th>
                       </tr>
                     </thead>
                     <tbody>
                       {this.state.orders.map((order) => (
                         <tr key={order.id}>
-                          <td>{order.number}</td>
-                          <td>{order.clientId}</td>
+                          <td>{order.id}</td>
+                          <td>{order.client}</td>
                           <td>{order.date}</td>
-                          <td>{order.detail}</td>
+                          <td>{order.product}</td>
+                          <td> $ {order.price}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -150,25 +175,21 @@ class OrderAdministrator extends React.Component {
               <div className="col-3"></div>
             </div>
           </Tab>
-          <Tab eventKey="num2" title="Consulta Pedido Pago Prodedio">
+          <Tab eventKey="num2" title="Consulta Pedido Pago Promedio">
             {this._selectDate(this._onSearchConsult2)}
             <div style={{ marginTop: '3%' }}>
-              <Table responsive>
+              <Table responsive >
                 <thead>
                   <tr>
                     <th>Cliente</th>
-                    <th>Cedula Cliente</th>
-                    <th>Cantidad Pedidos</th>
                     <th>Monto Promedio Pedido</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.clientsConsulta2.map((item) => (
+                  {this.state.resultConsult2.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.name}</td>
-                      <td>{item.clientId}</td>
-                      <td>{item.orderAmount}</td>
-                      <td>{item.orderAverage}</td>
+                      <td>{item.Cl_First_Name} {item.Cl_Last_Name_1} {item.Cl_Last_Name_2}</td>
+                      <td>{item.Average_Payment}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -182,18 +203,18 @@ class OrderAdministrator extends React.Component {
                 <Form.Group controlId="ControlInputStartDate">
                   <Form.Label>Mes:</Form.Label>
                   <Form.Control as="select" placeholder="tipo" onChange={this._handleChangeOrderMonth.bind(this)}>
-                    <option>Enero</option>
-                    <option>Febrero</option>
-                    <option>Marzo</option>
-                    <option>Abril</option>
-                    <option>Mayo</option>
-                    <option>Junio</option>
-                    <option>Julio</option>
-                    <option>Agosto</option>
-                    <option>Septiembre</option>
-                    <option>Octubre</option>
-                    <option>Noviembre</option>
-                    <option>Diciembre</option>
+                    <option value={'01'}>Enero</option>
+                    <option value={'02'}>Febrero</option>
+                    <option value={'03'}>Marzo</option>
+                    <option value={'04'}>Abril</option>
+                    <option value={'05'}>Mayo</option>
+                    <option value={'06'}>Junio</option>
+                    <option value={'07'}>Julio</option>
+                    <option value={'08'}>Agosto</option>
+                    <option value={'09'}>Septiembre</option>
+                    <option value={'10'}>Octubre</option>
+                    <option value={'11'}>Noviembre</option>
+                    <option value={'12'}>Diciembre</option>
                   </Form.Control>
                 </Form.Group>
               </div>
@@ -212,9 +233,9 @@ class OrderAdministrator extends React.Component {
             </div>
             <div className="row" style={{ margin: '4%' }}>
               Total de Monto en Pedidos del Tipo
-              <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.orderType}</a>
-              para el mes <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.orderMonth}</a>
-              es: <a style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.resultConsult3}</a>
+              <p style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.orderType}</p>
+              para el mes <p style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.orderMonthName[this.state.orderMonth-1]}</p>
+              es: <p style={{ marginLeft: '1%', marginRight: '1%', fontWeight: 'bold' }}>{this.state.resultConsult3}</p>
             </div>
           </Tab>
         </Tabs>

@@ -50,25 +50,42 @@ class OfficeManagement extends React.Component {
   }
 
   _onSearchType = () => {
-    this.setState({
-      amountByType: [
-        { id: '1', name: 'Heredia', amount: '$ 75', type: 'Regular'},
-        { id: '2', name: 'San Jose', amount: '$ 65', type: 'Especial'},
-        { id: '3', name: 'Cartago', amount: '$ 40' , type: 'Especial'},
-        { id: '4', name: 'Heredia', amount: '$ 45', type: 'Especial'},
-        { id: '5', name: 'San Jose', amount: '$ 55', type: 'Regular'}
-      ]
-    });
+    return fetch(`http://localhost:8080/GetBranchTypeRaisedMoney?in=${this.state.startDate}&out=${this.state.endDate}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson !== '') {
+          console.log(responseJson);
+          this.setState({
+            amountByType: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   _onSearchAmount = () => {
-    this.setState({
-      amountByBranchOffice: [
-        { id: '1', name: 'Heredia', amount: '$ 200' },
-        { id: '2', name: 'San Jose', amount: '$ 120' },
-        { id: '3', name: 'Cartago', amount: '$ 40' }
-      ]
-    });
+    return fetch(`http://localhost:8080/GetBranchRaisedMoney?in=${this.state.startDate}&out=${this.state.endDate}`,
+      {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+
+        if (responseJson !== '') {
+          this.setState({
+            amountByBranchOffice: responseJson
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   }
 
 
@@ -91,7 +108,7 @@ class OfficeManagement extends React.Component {
                     {this.state.amountByBranchOffice.map((item) => (
                       <tr key={item.id}>
                         <td>{item.name}</td>
-                        <td>{item.amount}</td>
+                        <td> $ {item.amount}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -115,7 +132,7 @@ class OfficeManagement extends React.Component {
                     {this.state.amountByType.map((item) => (
                       <tr key={item.id}>
                         <td>{item.name}</td>
-                        <td>{item.amount}</td>
+                        <td> $ {item.amount}</td>
                         <td>{item.type}</td>
                       </tr>
                     ))}

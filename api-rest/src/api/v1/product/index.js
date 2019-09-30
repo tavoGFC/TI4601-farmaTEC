@@ -1,4 +1,4 @@
-import Db from '../../../models/farmatecHeredia';
+import Db from '../../../models/farmatecSanJose';
 import Sequelize from 'sequelize';
 
 function ProductRoutes(server) {
@@ -6,8 +6,23 @@ function ProductRoutes(server) {
     {
       method: 'GET',
       path: '/Product',
-      handler: function(request, h) {
+      handler: function (request, h) {
         return '<h1>Product Test Successful!<h1>';
+      }
+    },
+    {
+      method: 'GET',
+      path: '/GetProductName',
+      handler: async function (request) {
+        const db = await Db.connect();
+        const result = await db.query(
+          'EXEC sp_Get_Product_Name :name',
+          {
+            replacements: { name: request.query.product },
+            type: Sequelize.QueryTypes.SELECT
+          }
+        );
+        return result;
       }
     }
   ]);
