@@ -10,7 +10,10 @@ import ScheduleRoutes from './api/v1/schedule/index';
 const init = async () => {
   const server = hapi.server({
     port: 8080,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    routes: {
+      cors: true
+    }
   });
 
   try {
